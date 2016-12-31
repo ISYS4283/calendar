@@ -36,4 +36,16 @@ class Calendar
 
         return $this;
     }
+
+    public function render(string $view = 'default') : string
+    {
+        $data = [];
+
+        return $this->twig->loadTemplate("$view.twig.html")->render($data);
+    }
+
+    public function __toString()
+    {
+        return $this->render();
+    }
 }

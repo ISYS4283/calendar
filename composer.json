@@ -1,0 +1,21 @@
+{
+    "name": "jpuck/calendar",
+    "description": "Create HTML calendars from a MySQL database using PHP.",
+    "license": "GPL-3.0+",
+    "authors": [
+        {
+            "name": "Jeff Puckett",
+            "email": "jeff@jeffpuckett.com"
+        }
+    ],
+    "require": {
+        "php": "^7.0",
+        "twig/twig": "^1.30",
+        "nesbot/carbon": "^1.21"
+    },
+    "autoload": {
+        "psr-4": {
+            "jpuck\\calendar\\": "src/"
+        }
+    }
+}

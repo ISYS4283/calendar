@@ -44,31 +44,55 @@ class Calendar
         $first_month = $first_event->start->format('F Y');
 
         $calendar = [
-            'months' => [
-                $first_month => $this->getEmptyMonth($first_event->start),
-            ],
+            'months' => $this->getMonthBlocks(),
         ];
 
         return $this->twig->loadTemplate("$view.twig.html")->render($calendar);
     }
 
-    protected function getEmptyMonth(Carbon $date) : array
+    protected function getMonthBlocks() : array
     {
-        $month = [];
+        $months = [];
+
+        foreach ( $this->events as $event ) {
+            $month = $event->start->format('F Y');
+            if ( empty( $months[$month] ) ) {
+                $months[$month] = $this->getEmptyMonth($event->start);
+            }
+
+            $months[$month][$event->start->day]['events'] []= $event;
+        }
+
+        foreach ( $months as $key => &$month ) {
+            $this->padMonthBlocks($month, new Carbon($key));
+        }
+
+        return $months;
+    }
+
+    protected function padMonthBlocks(array &$month, Carbon $date)
+    {
+        $pre = [];
 
         // pad leading blank days for even blocks of 7
         $first_day_of_week_in_month = $date->startOfMonth()->dayOfWeek;
         while ( $first_day_of_week_in_month-- ) {
-            $month []= null;
+            $pre []= null;
         }
 
-        $days_in_month = (int)$date->format('t');
-        for ( $i = 1; $i <= $days_in_month; ++$i ) {
-            $month []= ['date' => $i];
-        }
+        $month = array_merge($pre, $month);
 
+        // pad trailing blank days for even blocks of 7
         while ( count($month) % 7 ) {
             $month []= null;
+        }
+    }
+
+    protected function getEmptyMonth(Carbon $date) : array
+    {
+        $days_in_month = (int)$date->format('t');
+        for ( $i = 1; $i <= $days_in_month; ++$i ) {
+            $month[$i] = ['date' => $i];
         }
 
         return $month;

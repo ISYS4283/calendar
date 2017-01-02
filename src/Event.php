@@ -81,4 +81,9 @@ class Event
         $this->categories []= $category;
         return $this;
     }
+
+    public function __isset($name)
+    {
+        return true;
+    }
 }

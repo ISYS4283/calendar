@@ -2,5 +2,5 @@
 
 interface EventSource
 {
-    public function fetch() : Event;
+    public function fetch() : array;
 }

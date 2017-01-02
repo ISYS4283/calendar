@@ -3,6 +3,7 @@
 use InvalidArgumentException;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
+use Carbon\Carbon;
 
 class Calendar
 {
@@ -11,7 +12,7 @@ class Calendar
 
     public function __construct(EventSource $events, array $options = null)
     {
-        $this->events = $events;
+        $this->events = $events->fetch();
 
         if ( isset($options['views']) ) {
             $this->setViewsDirectory($options['views']);
@@ -39,9 +40,38 @@ class Calendar
 
     public function render(string $view = 'default') : string
     {
-        $data = [];
+        $first_event = $this->events[0] ?? new Carbon;
+        $first_month = $first_event->start->format('F Y');
 
-        return $this->twig->loadTemplate("$view.twig.html")->render($data);
+        $calendar = [
+            'months' => [
+                $first_month => $this->getEmptyMonth($first_event->start),
+            ],
+        ];
+
+        return $this->twig->loadTemplate("$view.twig.html")->render($calendar);
+    }
+
+    protected function getEmptyMonth(Carbon $date) : array
+    {
+        $month = [];
+
+        // pad leading blank days for even blocks of 7
+        $first_day_of_week_in_month = $date->startOfMonth()->dayOfWeek;
+        while ( $first_day_of_week_in_month-- ) {
+            $month []= null;
+        }
+
+        $days_in_month = (int)$date->format('t');
+        for ( $i = 1; $i <= $days_in_month; ++$i ) {
+            $month []= ['date' => $i];
+        }
+
+        while ( count($month) % 7 ) {
+            $month []= null;
+        }
+
+        return $month;
     }
 
     public function __toString()

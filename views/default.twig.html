@@ -2,31 +2,48 @@
 
 {% block content %}
 
-    <div class="title">February 2017</div>
+{% for month, days in months %}
 
-    <table>
-        <thead>
-            <tr>
-                <th>Sun</th>
-                <th>Mon</th>
-                <th>Tue</th>
-                <th>Wed</th>
-                <th>Thu</th>
-                <th>Fri</th>
-                <th>Sat</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><span class="date">&nbsp;</span></td>
-                <td><span class="date">&nbsp;</span></td>
-                <td><span class="date">&nbsp;</span></td>
-                <td><span class="date">1</span></td>
-                <td><span class="date">2</span></td>
-                <td><span class="date">3</span></td>
-                <td><span class="date">4</span></td>
-            </tr>
-        <tbody>
-    </table>
+<div class="title">{{ month }}</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    {% for week in days|batch(7) %}
+        <tr>
+
+        {% for day in week %}
+            <td>
+                <span class="date">{{ day.date }}</span>
+                <ul>
+
+                {% for event in day.events %}
+
+                    <li class="event">{{ event.title }}</li>
+
+                {% endfor %}
+
+                </ul>
+            </td>
+        {% endfor %}
+
+        </tr>
+    {% endfor %}
+
+    <tbody>
+</table>
+
+{% endfor %}
 
 {% endblock %}

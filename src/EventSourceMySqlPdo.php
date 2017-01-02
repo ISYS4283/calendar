@@ -1,6 +1,7 @@
 <?php namespace jpuck\calendar;
 
 use PDO;
+use Carbon\Carbon;
 
 class EventSourceMySqlPdo implements EventSource
 {
@@ -13,6 +14,9 @@ class EventSourceMySqlPdo implements EventSource
 
     public function fetch() : Event
     {
-        return new Event;
+        $id = 42;
+        $start = new Carbon;
+        $title = 'Something Huge';
+        return new Event($id, $start, $title);
     }
 }

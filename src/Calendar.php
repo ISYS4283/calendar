@@ -6,12 +6,12 @@ use Twig_Loader_Filesystem;
 
 class Calendar
 {
-    protected $db;
+    protected $events;
     protected $twig;
 
-    public function __construct(\PDO $db, array $options = null)
+    public function __construct(EventSource $events, array $options = null)
     {
-        $this->db = $db;
+        $this->events = $events;
 
         if ( isset($options['views']) ) {
             $this->setViewsDirectory($options['views']);

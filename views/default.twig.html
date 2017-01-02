@@ -30,7 +30,13 @@
 
                 {% for event in day.events %}
 
-                    <li class="event">{{ event.title }}</li>
+                    <li id="{{ event.id }}"
+                        class="event"
+                        data-start="{{ event.start }}"
+                        data-finish="{{ event.finish }}"
+                        data-description="{{ event.description }}">
+                        {{- event.title -}}
+                    </li>
 
                 {% endfor %}
 

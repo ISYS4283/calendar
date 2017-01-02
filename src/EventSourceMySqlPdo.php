@@ -24,11 +24,23 @@ class EventSourceMySqlPdo implements EventSource
     protected function cast()
     {
         foreach ( $this->select() as $event ) {
-            // TODO: get optional fields
+            $options = [];
+
+            if ( ! empty($event['finish']) ) {
+                $options['finish'] = new Carbon($event['finish']);
+            }
+
+            if ( ! empty($event['description']) ) {
+                $options['description'] = $event['description'];
+            }
+
+            // TODO: get categories
+
             $this->events []= new Event(
                 (int)$event['id'],
                 new Carbon($event['start']),
-                $event['title']
+                $event['title'],
+                $options
             );
         }
     }

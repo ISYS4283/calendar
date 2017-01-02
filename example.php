@@ -9,4 +9,4 @@ $events = new EventSourceMySqlPdo($pdo);
 
 $calendar = new Calendar($events);
 
-echo $calendar;
+echo $calendar->render();

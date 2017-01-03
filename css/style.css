@@ -54,6 +54,18 @@ th.month {
     display:none;
 }
 
-.holiday {
+[data-categories~="holiday"] {
     background-color: gold;
+}
+
+[data-categories~="exam"] {
+    background-color: red;
+}
+
+[data-categories~="class"] {
+    color: blue;
+}
+
+[data-categories~="registrar"] {
+    color: maroon;
 }

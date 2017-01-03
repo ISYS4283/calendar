@@ -40,12 +40,7 @@ class Calendar
 
     public function render(string $view = 'default') : string
     {
-        $first_event = $this->events[0] ?? new Carbon;
-        $first_month = $first_event->start->format('F Y');
-
-        $calendar = [
-            'months' => $this->getMonthBlocks(),
-        ];
+        $calendar = $this->getMonthBlocks();
 
         return $this->twig->loadTemplate("$view.twig.html")->render($calendar);
     }
@@ -67,7 +62,7 @@ class Calendar
             $this->padMonthBlocks($month, new Carbon($key));
         }
 
-        return $months;
+        return ['months' => $months];
     }
 
     protected function padMonthBlocks(array &$month, Carbon $date)

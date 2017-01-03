@@ -17,4 +17,9 @@ class Category
     {
         return $this->$property;
     }
+
+    public function __isset($name)
+    {
+        return true;
+    }
 }

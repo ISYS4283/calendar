@@ -10,6 +10,7 @@ class Event
     protected $title;
     protected $description;
     protected $categories;
+    protected $category_list;
 
     public function __construct(int $id, Carbon $start, string $title, array $options = null)
     {
@@ -68,10 +69,13 @@ class Event
     public function setCategories(array $categories) : Event
     {
         $this->categories = [];
+        $this->category_list = [];
 
         foreach ($categories as $category) {
             $this->addCategory($category);
+            $this->category_list []= $category->name;
         }
+        $this->category_list = implode(' ', $this->category_list);
 
         return $this;
     }

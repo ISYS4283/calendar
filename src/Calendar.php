@@ -55,7 +55,12 @@ class Calendar
                 $months[$month] = $this->getEmptyMonth($event->start);
             }
 
-            $months[$month][$event->start->day]['events'] []= $event;
+            $months[$month][$start = $event->start->day]['events'] []= $event;
+            if ( ! empty($finish = $event->finish->day) ) {
+                while ( $finish !== $start ) {
+                    $months[$month][$finish--]['events'] []= $event;
+                }
+            }
         }
 
         foreach ( $months as $key => &$month ) {

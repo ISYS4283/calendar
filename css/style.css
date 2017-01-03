@@ -62,6 +62,10 @@ th.month {
     background-color: red;
 }
 
+[data-categories~="project"] {
+    background-color: cornflowerblue;
+}
+
 [data-categories~="class"] {
     color: blue;
 }
